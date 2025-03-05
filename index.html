@@ -1,1 +1,817 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatolion Guild - Throne and Liberty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #e8d6b3;
+            background-image: url('assets/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: soft-light;
+            min-height: 100vh;
+            font-family: 'Cinzel', serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body:after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(10, 10, 18, 0.4) 0%, rgba(10, 10, 18, 0.8) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        /* Vertical side borders */
+        .side-border-left, .side-border-right {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(232, 214, 179, 0.3), transparent);
+            z-index: 10;
+        }
+        
+        .side-border-left {
+            left: 3%;
+        }
+        
+        .side-border-right {
+            right: 3%;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .guild-crest {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 5px rgba(232, 214, 179, 0.5));
+            margin-right: 15px;
+        }
+        
+        .guild-tag {
+            color: #ffd587;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 213, 135, 0.4);
+        }
+        
+        .menu-container {
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .menu-title {
+            font-size: 16px;
+            letter-spacing: 3px;
+            color: #e8d6b3;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .menu-title:before, .menu-title:after {
+            content: '';
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e8d6b3, transparent);
+            width: 150px;
+            margin: 0 15px;
+        }
+        
+        .menu-title i {
+            color: #e8d6b3;
+            margin: 0 10px;
+            font-size: 12px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+        
+        nav ul li a {
+            color: #e8d6b3;
+            text-decoration: none;
+            font-size: 16px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: #ffd587;
+            text-shadow: 0 0 10px rgba(255, 213, 135, 0.5);
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background: #ffd587;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -4px;
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        .discord-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #7289da 0%, #5b6eae 100%);
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 18px;
+            border-radius: 4px;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .discord-btn:hover {
+            background: linear-gradient(135deg, #8299ea 0%, #6b7ebe 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .discord-btn i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 300px);
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .guild-logo {
+            width: 450px;
+            margin-bottom: 50px;
+            filter: drop-shadow(0 0 20px rgba(232, 214, 179, 0.4));
+        }
+        
+        .guild-motto {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            line-height: 1.8;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: #e8d6b3;
+            font-family: 'Marcellus', serif;
+        }
+        
+        /* Community Features */
+        .features {
+            margin: 60px auto;
+            text-align: center;
+            max-width: 1100px;
+            padding: 0 20px;
+        }
+        
+        .features-title {
+            font-size: 28px;
+            color: #e8d6b3;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .features-title:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e8d6b3, transparent);
+            bottom: -15px;
+            left: 20%;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(10, 10, 18, 0.7);
+            border: 1px solid rgba(232, 214, 179, 0.2);
+            padding: 30px;
+            border-radius: 4px;
+            transition: all 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: #ffd587;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            color: #ffd587;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            color: #ffdf9e;
+            text-shadow: 0 0 15px rgba(255, 213, 135, 0.7);
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            color: #e8d6b3;
+            margin-bottom: 15px;
+        }
+        
+        .feature-desc {
+            font-size: 15px;
+            color: #e8d6b3;
+            line-height: 1.7;
+            font-family: 'Marcellus', serif;
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            margin: 100px 0;
+            text-align: center;
+            background: rgba(10, 10, 18, 0.7);
+            padding: 80px 20px;
+            position: relative;
+        }
+        
+        .cta-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/pattern.png');
+            background-size: 300px;
+            background-repeat: repeat;
+            opacity: 0.03;
+            z-index: -1;
+        }
+        
+        .cta-title {
+            font-size: 32px;
+            color: #ffd587;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .cta-desc {
+            font-size: 18px;
+            color: #e8d6b3;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            font-family: 'Marcellus', serif;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #ffd587 0%, #d4af6e 100%);
+            color: #0a0a12;
+            border: none;
+            padding: 14px 30px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(232, 214, 179, 0.3);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid #ffd587;
+            color: #ffd587;
+            padding: 14px 30px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(255, 213, 135, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Page Indicators */
+        .page-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(232, 214, 179, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .indicator.active {
+            background: #ffd587;
+            box-shadow: 0 0 8px rgba(255, 213, 135, 0.6);
+        }
+        
+        .indicator:hover:not(.active) {
+            background: rgba(232, 214, 179, 0.5);
+        }
+        
+        .indicator:after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid rgba(232, 214, 179, 0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active:after {
+            opacity: 1;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid rgba(232, 214, 179, 0.1);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-logo {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-links a {
+            color: #e8d6b3;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd587;
+        }
+        
+        .platform-icons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .platform-icon {
+            color: #e8d6b3;
+            font-size: 22px;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        
+        .platform-icon:hover {
+            color: #ffd587;
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.2s ease forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.3s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.6s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.9s;
+        }
+        
+        /* Media Queries */
+        @media (max-width: 1400px) {
+            .side-border-left {
+                left: 1%;
+            }
+            
+            .side-border-right {
+                right: 1%;
+            }
+        }
+        
+        @media (max-width: 1100px) {
+            .side-border-left, .side-border-right {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        @media (max-width: 1208px) {
+            .menu-container {
+                position: static;
+                transform: none;
+                margin: 20px 0;
+            }
+            
+            header {
+                flex-direction: column;
+            }
+            
+            .guild-logo {
+                width: 320px;
+            }
+            
+            .menu-title:before, .menu-title:after {
+                width: 80px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .primary-btn, .secondary-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            nav ul {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .guild-logo {
+                width: 260px;
+            }
+            
+            .guild-motto {
+                font-size: 16px;
+            }
+            
+            .cta-title {
+                font-size: 28px;
+            }
+            
+            .cta-desc {
+                font-size: 16px;
+            }
+            
+            nav ul li a {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="side-border-left"></div>
+    <div class="side-border-right"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="assets/guild-crest.png" alt="Anatolion Guild Crest" class="guild-crest">
+                <span class="guild-tag fade-in">ANATOLION</span>
+            </div>
+            
+            <div class="menu-container">
+                <div class="menu-title">
+                    <i class="fas fa-caret-right"></i> MENU <i class="fas fa-caret-left"></i>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#community">Community</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#recruitment">Join Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <a href="https://discord.gg/SZW6Smw8dU" class="discord-btn">
+                <i class="fab fa-discord"></i> Join Discord
+            </a>
+        </header>
+
+        <div class="main-content" id="home">
+            <img src="assets/anatolion-logo.png" alt="Anatolion Guild Logo" class="guild-logo fade-in">
+            
+            <p class="guild-motto fade-in delay-1">
+                Welcome to our elite and supportive guild. At Anatolion, we believe that the greatest adventures are those shared with allies. Join us to experience Throne and Liberty in a community that values strategy, camaraderie, and helping each other conquer.
+            </p>
+            
+        </div>
+        
+        <section class="features" id="community">
+            <h2 class="features-title fade-in">Our Community Values</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Elite Brotherhood</h3>
+                    <p class="feature-desc">Join a dedicated alliance of players who value skill, strategy, and supporting each other in all battles across Throne and Liberty.</p>
+                </div>
+                <div class="feature-card fade-in delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3 class="feature-title">Support & Growth</h3>
+                    <p class="feature-desc">Whether you're a veteran or new to the game, our members are always ready to offer advice, run dungeons together, and help with gear progression.</p>
+                </div>
+                <div class="feature-card fade-in delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Regular Events</h3>
+                    <p class="feature-desc">From weekly guild activities to special themed nights, we create fun and engaging experiences that bring our community closer together.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta-section" id="recruitment">
+            <h2 class="cta-title fade-in">Join Our Guild</h2>
+            <p class="cta-desc fade-in delay-1">Anatolion seeks dedicated warriors and tacticians to join our ranks. We welcome players who demonstrate skill and commitment, who value strategic gameplay, honor, and the glory of conquest.</p>
+            <div class="cta-buttons fade-in delay-2">
+                <a href="https://discord.gg/SZW6Smw8dU" class="primary-btn"><i class="fab fa-discord"></i> Join Our Discord</a>
+                <a href="#about" class="secondary-btn">Learn More</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="assets/guild-crest.png" alt="Anatolion Guild Crest" class="footer-logo">
+            
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#community">Community</a>
+                <a href="#events">Events</a>
+                <a href="#recruitment">Join Us</a>
+            </div>
+            
+            <div class="platform-icons">
+                <a href="https://discord.gg/SZW6Smw8dU"><i class="fab fa-discord platform-icon"></i></a>
+                <i class="fab fa-steam platform-icon"></i>
+                <i class="fab fa-youtube platform-icon"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple indicator switcher with auto-rotation
+        const indicators = document.querySelectorAll('.indicator');
+        let currentIndex = 0;
+        
+        function activateIndicator(index) {
+            document.querySelector('.indicator.active').classList.remove('active');
+            indicators[index].classList.add('active');
+            currentIndex = index;
+        }
+        
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                activateIndicator(index);
+                clearInterval(indicatorInterval); // Stop auto-rotation on manual click
+                indicatorInterval = setInterval(rotateIndicators, 5000); // Restart timer
+            });
+        });
+        
+        function rotateIndicators() {
+            currentIndex = (currentIndex + 1) % indicators.length;
+            activateIndicator(currentIndex);
+        }
+        
+        let indicatorInterval = setInterval(rotateIndicators, 5000);
+        
+        // Animation triggers on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Add particle effect to the header
+            const header = document.querySelector('header');
+            const particles = document.createElement('div');
+            particles.classList.add('particles');
+            header.appendChild(particles);
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particles.appendChild(particle);
+            }
+        });
+    </script>
+    
+    <style>
+        /* Particle effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(232, 214, 179, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: float linear infinite, pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(-40px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-60px) translateX(5px);
+            }
+            100% {
+                transform: translateY(-80px) translateX(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</body>
+</html>
