@@ -109,11 +109,11 @@
             font-weight: 600;
         }
         
-        .menu-title:before, .menu-title:after {
+        .menu-title:before {
             content: '';
             height: 1px;
             background: linear-gradient(to right, transparent, #e8d6b3, transparent);
-            width: 150px;
+            width: 60%;
             margin: 0 15px;
         }
         
@@ -518,6 +518,10 @@
         }
         
         @media (max-width: 1100px) {
+            .logo-container {
+                flex-direction: column;
+            }
+
             .side-border-left, .side-border-right {
                 display: none;
             }
@@ -533,6 +537,7 @@
         }
         
         @media (max-width: 900px) {
+            
             .features-grid {
                 grid-template-columns: 1fr;
                 max-width: 500px;
@@ -579,6 +584,7 @@
         }
         
         @media (max-width: 480px) {
+
             .footer-links{
                 flex-direction: column;
             }
@@ -614,7 +620,7 @@
         <header>
             <div class="logo-container">
                 <img src="assets/guild-crest.png" alt="Anatolion Guild Crest" class="guild-crest">
-                <span class="guild-tag fade-in">ANATOLION</span>
+                <span class="guild-tag">ANATOLION</span>
             </div>
             
             <div class="menu-container">
@@ -637,7 +643,7 @@
         </header>
 
         <div class="main-content" id="home">
-            <img src="assets/anatolion-logo.png" alt="Anatolion Guild Logo" class="guild-logo fade-in">
+            <img src="assets/anatolion-logo.png" alt="Anatolion Guild Logo" class="guild-logo fade-in delay-1">
             
             <p class="guild-motto fade-in delay-1">
                 Welcome to our elite and supportive guild. At Anatolion, we believe that the greatest adventures are those shared with allies. Join us to experience Throne and Liberty in a community that values strategy, camaraderie, and helping each other conquer.
@@ -646,7 +652,7 @@
         </div>
         
         <section class="features" id="community">
-            <h2 class="features-title fade-in">Our Community Values</h2>
+            <h2 class="features-title fade-in delay-1">Our Community Values</h2>
             <div class="features-grid">
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
